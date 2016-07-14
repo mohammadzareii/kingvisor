@@ -1,4 +1,4 @@
-# [TeleSeed](https://telegram.me/TeleSeed)
+# [TIGER](https://telegram.me/joinchat/Di7N0D6tIuWVCmoU15H13w)
 
 [![https://gitter.im/SEEDTEAM/TeleSeed](https://badges.gitter.im/SEEDTEAM/TeleSeed.svg)](https://gitter.im/SEEDTEAM/TeleSeed?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -289,9 +289,7 @@ Check out this [tutorial by Telegram Geeks](http://telegramgeeks.com/2016/01/tel
 Join our bot development group by sending `/join 1047524697` to [@TeleSeed](https://telegram.me/TeleSeed)
 
 # Special thanks to
-[@seyedan25](https://telegram.me/seyedan25)
-
-For managing [@teleseed](https://telegram.me/TeleSeed) on Telegram.
+[Mohammad zri://telegram.me/joinchat/Di7N0D6tIuWVCmoU15H13w)
 
 [@Vamptacus](https://telegram.me/Vamptacus)
 
