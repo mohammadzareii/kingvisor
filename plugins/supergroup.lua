@@ -1,4 +1,4 @@
-﻿--Begin supergrpup.lua
+--Begin supergrpup.lua
 --Check members #Add supergroup
 local function check_member_super(cb_extra, success, result)
   local receiver = cb_extra.receiver
@@ -93,7 +93,7 @@ for k,v in pairsByKeys(result) do
 if not v.first_name then
 	name = " "
 else
-	vname = v.first_name:gsub("‮", "")
+	vname = v.first_name:gsub("?", "")
 	name = vname:gsub("_", " ")
 	end
 		text = text.."\n"..i.." - "..name.."["..v.peer_id.."]"
@@ -136,7 +136,7 @@ for k,v in pairsByKeys(result) do
 if not v.print_name then
 	name = " "
 else
-	vname = v.print_name:gsub("‮", "")
+	vname = v.print_name:gsub("?", "")
 	name = vname:gsub("_", " ")
 end
 	if v.username then
@@ -165,7 +165,7 @@ for k,v in pairsByKeys(result) do
 if not v.print_name then
 	name = " "
 else
-	vname = v.print_name:gsub("‮", "")
+	vname = v.print_name:gsub("?", "")
 	name = vname:gsub("_", " ")
 end
 	if v.username then
@@ -185,284 +185,312 @@ end
 --Begin supergroup locks
 local function lock_group_links(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
   if group_link_lock == 'yes' then
-    return 'Link posting is already locked'
+    return 'لينک از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_link'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Link posting has been locked'
+    return 'ارسال لينک قفل شد'
   end
 end
 
 local function unlock_group_links(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
   if group_link_lock == 'no' then
-    return 'Link posting is not locked'
+    return 'لينک از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_link'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Link posting has been unlocked'
+    return 'ارسال لينک آزاد شد'
+  end
+end
+
+local function lock_group_emoji(msg, data, target)
+  if not is_momod(msg) then
+    return 'شما مجاز به ارسال دستور نيستيد'
+  end
+  local group_emoji_lock = data[tostring(target)]['settings']['lock_emoji']
+  if group_emoji_lock == 'yes' then
+    return 'شکلک از قبل قفل است'
+  else
+    data[tostring(target)]['settings']['lock_emoji'] = 'yes'
+    save_data(_config.moderation.data, data)
+    return 'ارسال شکلک قفل شد'
+  end
+end
+
+local function unlock_group_emoji(msg, data, target)
+  if not is_momod(msg) then
+    return 'شما مجاز به ارسال دستور نيستيد'
+  end
+  local group_emoji_lock = data[tostring(target)]['settings']['lock_emoji']
+  if group_emoji_lock == 'no' then
+    return 'شکلک از قبل آزاد است'
+  else
+    data[tostring(target)]['settings']['emoji'] = 'no'
+    save_data(_config.moderation.data, data)
+    return 'ارسال شکلک آزاد شد'
   end
 end
 
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   if not is_owner(msg) then
-    return "Owners only!"
+    return "فقط مدير اصلي مجاز است"
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'yes' then
-    return 'SuperGroup spam is already locked'
+    return 'هرزنامه از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_spam'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'SuperGroup spam has been locked'
+    return 'ارسال هرزنامه قفل شد'
   end
 end
 
 local function unlock_group_spam(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'no' then
-    return 'SuperGroup spam is not locked'
+    return 'هرزنامه از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_spam'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'SuperGroup spam has been unlocked'
+    return 'ارسال هرزنامه آزاد شد'
   end
 end
 
 local function lock_group_flood(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
   if group_flood_lock == 'yes' then
-    return 'Flood is already locked'
+    return 'سيل پيام از قبل قفل است'
   else
     data[tostring(target)]['settings']['flood'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Flood has been locked'
+    return 'ارسال سيل پيام قفل شد'
   end
 end
 
 local function unlock_group_flood(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
   if group_flood_lock == 'no' then
-    return 'Flood is not locked'
+    return 'سيل پيام از قبل آزاد است'
   else
     data[tostring(target)]['settings']['flood'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Flood has been unlocked'
+    return 'ارسال سيل پيام آزاد شد'
   end
 end
 
 local function lock_group_arabic(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
   if group_arabic_lock == 'yes' then
-    return 'Arabic is already locked'
+    return 'عربي از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_arabic'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Arabic has been locked'
+    return 'زبان عربي قفل شد'
   end
 end
 
 local function unlock_group_arabic(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
   if group_arabic_lock == 'no' then
-    return 'Arabic/Persian is already unlocked'
+    return 'عربي از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_arabic'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Arabic/Persian has been unlocked'
+    return 'زبان عربي آزاد شد'
   end
 end
 
 local function lock_group_membermod(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_member_lock = data[tostring(target)]['settings']['lock_member']
   if group_member_lock == 'yes' then
-    return 'SuperGroup members are already locked'
+    return 'قفل عضو از قبل فعال است'
   else
     data[tostring(target)]['settings']['lock_member'] = 'yes'
     save_data(_config.moderation.data, data)
   end
-  return 'SuperGroup members has been locked'
+  return 'قفل عضو فعال شد'
 end
 
 local function unlock_group_membermod(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_member_lock = data[tostring(target)]['settings']['lock_member']
   if group_member_lock == 'no' then
-    return 'SuperGroup members are not locked'
+    return 'قفل عضو از قبل غير فعال است'
   else
     data[tostring(target)]['settings']['lock_member'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'SuperGroup members has been unlocked'
+    return 'قفل عضو غير فعال شد'
   end
 end
 
 local function lock_group_rtl(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
   if group_rtl_lock == 'yes' then
-    return 'RTL is already locked'
+    return 'راست به چب از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_rtl'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'RTL has been locked'
+    return 'راست به چپ قفل شد'
   end
 end
 
 local function unlock_group_rtl(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
   if group_rtl_lock == 'no' then
-    return 'RTL is already unlocked'
+    return 'راست به چپ از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_rtl'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'RTL has been unlocked'
+    return 'راست به چپ آزاد شد'
   end
 end
 
 local function lock_group_tgservice(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
   if group_tgservice_lock == 'yes' then
-    return 'Tgservice is already locked'
+    return 'ازقبل قفل است TGخدمات'
   else
     data[tostring(target)]['settings']['lock_tgservice'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Tgservice has been locked'
+    return 'قفل شد TGخدمات'
   end
 end
 
 local function unlock_group_tgservice(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
   if group_tgservice_lock == 'no' then
-    return 'TgService Is Not Locked!'
+    return 'ازقبل آزاد است TGخدمات'
   else
     data[tostring(target)]['settings']['lock_tgservice'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Tgservice has been unlocked'
+    return 'آزاد شد TGخدمات'
   end
 end
 
 local function lock_group_sticker(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
   if group_sticker_lock == 'yes' then
-    return 'Sticker posting is already locked'
+    return 'برچسب از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_sticker'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Sticker posting has been locked'
+    return 'ارسال برچسب قفل شد'
   end
 end
 
 local function unlock_group_sticker(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
   if group_sticker_lock == 'no' then
-    return 'Sticker posting is already unlocked'
+    return 'برچسب از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_sticker'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Sticker posting has been unlocked'
+    return 'ارسال برچسب آزاد شد'
   end
 end
 
 local function lock_group_contacts(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
   if group_contacts_lock == 'yes' then
-    return 'Contact posting is already locked'
+    return 'اطلاعات تماس از قبل قفل است'
   else
     data[tostring(target)]['settings']['lock_contacts'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Contact posting has been locked'
+    return 'ارسال اطلاعات تماس قفل شد'
   end
 end
 
 local function unlock_group_contacts(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
   if group_contacts_lock == 'no' then
-    return 'Contact posting is already unlocked'
+    return 'اطلاعات تماس از قبل آزاد است'
   else
     data[tostring(target)]['settings']['lock_contacts'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Contact posting has been unlocked'
+    return 'ارسال اطلاعات تماس آزاد شد'
   end
 end
 
 local function enable_strict_rules(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
   if group_strict_lock == 'yes' then
-    return 'Settings are already strictly enforced'
+    return 'تنظيمات سختگيرانه از قبل فعال است'
   else
     data[tostring(target)]['settings']['strict'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'Settings will be strictly enforced'
+    return 'تنظيمات سختگيرانه فعال شد'
   end
 end
 
 local function disable_strict_rules(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
   if group_strict_lock == 'no' then
-    return 'Settings are not strictly enforced'
+    return 'تنظيمات سختگيرانه از قبل غيرفعال است'
   else
     data[tostring(target)]['settings']['strict'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'Settings will not be strictly enforced'
+    return 'تنظيمات سختگيرانه غيرفعال شد'
   end
 end
 --End supergroup locks
@@ -470,19 +498,19 @@ end
 --'Set supergroup rules' function
 local function set_rulesmod(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local data_cat = 'rules'
   data[tostring(target)][data_cat] = rules
   save_data(_config.moderation.data, data)
-  return 'SuperGroup rules set'
+  return 'قوانين سوپرگروه تنظيم شد'
 end
 
 --'Get supergroup rules' function
 local function get_rules(msg, data)
   local data_cat = 'rules'
   if not data[tostring(msg.to.id)][data_cat] then
-    return 'No rules available.'
+    return 'در حال حاضر قانوني موجود نيست'
   end
   local rules = data[tostring(msg.to.id)][data_cat]
   local group_name = data[tostring(msg.to.id)]['settings']['set_name']
@@ -493,7 +521,7 @@ end
 --Set supergroup to public or not public function
 local function set_public_membermod(msg, data, target)
   if not is_momod(msg) then
-    return "For moderators only!"
+    return "شما مجاز به ارسال دستور نميباشيد"
   end
   local group_public_lock = data[tostring(target)]['settings']['public']
   local long_id = data[tostring(target)]['long_id']
@@ -502,17 +530,17 @@ local function set_public_membermod(msg, data, target)
 	save_data(_config.moderation.data, data)
   end
   if group_public_lock == 'yes' then
-    return 'Group is already public'
+    return 'گروه از قبل عمومي است'
   else
     data[tostring(target)]['settings']['public'] = 'yes'
     save_data(_config.moderation.data, data)
   end
-  return 'SuperGroup is now: public'
+  return 'گروه اکنون عمومي است'
 end
 
 local function unset_public_membermod(msg, data, target)
   if not is_momod(msg) then
-    return
+    return 'شما مجاز به ارسال دستور نيستيد'
   end
   local group_public_lock = data[tostring(target)]['settings']['public']
   local long_id = data[tostring(target)]['long_id']
@@ -521,19 +549,19 @@ local function unset_public_membermod(msg, data, target)
 	save_data(_config.moderation.data, data)
   end
   if group_public_lock == 'no' then
-    return 'Group is not public'
+    return 'گروه از قبل خصوصي است'
   else
     data[tostring(target)]['settings']['public'] = 'no'
 	data[tostring(target)]['long_id'] = msg.to.long_id
     save_data(_config.moderation.data, data)
-    return 'SuperGroup is now: not public'
+    return 'گروه اکنون خصوصي است'
   end
 end
 
 --Show supergroup settings; function
 function show_supergroup_settingsmod(msg, target)
  	if not is_momod(msg) then
-    	return
+    	return 'شما مجاز به ارسال دستور نيستيد'
   	end
 	local data = load_data(_config.moderation.data)
     if data[tostring(target)] then
@@ -565,7 +593,7 @@ end
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "SuperGroup settings:\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
+  local text = "SuperGroup settings:\nLock emoji : "..settings.lock_emoji.."\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
   return text
 end
 
@@ -577,7 +605,7 @@ local function promote_admin(receiver, member_username, user_id)
     return
   end
   if data[group]['moderators'][tostring(user_id)] then
-    return send_large_msg(receiver, member_username..' is already a moderator.')
+    return send_large_msg(receiver, member_username..' در حال حاضر مدير ميباشد')
   end
   data[group]['moderators'][tostring(user_id)] = member_tag_username
   save_data(_config.moderation.data, data)
@@ -590,7 +618,7 @@ local function demote_admin(receiver, member_username, user_id)
     return
   end
   if not data[group]['moderators'][tostring(user_id)] then
-    return send_large_msg(receiver, member_tag_username..' is not a moderator.')
+    return send_large_msg(receiver, member_tag_username..' مدير نيست')
   end
   data[group]['moderators'][tostring(user_id)] = nil
   save_data(_config.moderation.data, data)
@@ -601,24 +629,24 @@ local function promote2(receiver, member_username, user_id)
   local group = string.gsub(receiver, 'channel#id', '')
   local member_tag_username = string.gsub(member_username, '@', '(at)')
   if not data[group] then
-    return send_large_msg(receiver, 'SuperGroup is not added.')
+    return send_large_msg(receiver, 'سوپرگروه اضافه نشده است')
   end
   if data[group]['moderators'][tostring(user_id)] then
-    return send_large_msg(receiver, member_username..' is already a moderator.')
+    return send_large_msg(receiver, member_username..' در حال حاضر يک مدير است')
   end
   data[group]['moderators'][tostring(user_id)] = member_tag_username
   save_data(_config.moderation.data, data)
-  send_large_msg(receiver, member_username..' has been promoted.')
+  send_large_msg(receiver, member_username..' ترفيع گرفت.')
 end
 
 local function demote2(receiver, member_username, user_id)
   local data = load_data(_config.moderation.data)
   local group = string.gsub(receiver, 'channel#id', '')
   if not data[group] then
-    return send_large_msg(receiver, 'Group is not added.')
+    return send_large_msg(receiver, 'گروه اضافه نشده است.')
   end
   if not data[group]['moderators'][tostring(user_id)] then
-    return send_large_msg(receiver, member_tag_username..' is not a moderator.')
+    return send_large_msg(receiver, member_tag_username..' مدير نيست')
   end
   data[group]['moderators'][tostring(user_id)] = nil
   save_data(_config.moderation.data, data)
@@ -629,11 +657,11 @@ local function modlist(msg)
   local data = load_data(_config.moderation.data)
   local groups = "groups"
   if not data[tostring(groups)][tostring(msg.to.id)] then
-    return 'SuperGroup is not added.'
+    return 'سوپرگروه اضافه نشده است'
   end
   -- determine if table is empty
   if next(data[tostring(msg.to.id)]['moderators']) == nil then
-    return 'No moderator in this group.'
+    return 'مديري در اين گروه نيست'
   end
   local i = 1
   local message = '\nList of moderators for ' .. string.gsub(msg.to.print_name, '_', ' ') .. ':\n'
@@ -649,7 +677,7 @@ function get_message_callback(extra, success, result)
 	local get_cmd = extra.get_cmd
 	local msg = extra.msg
 	local data = load_data(_config.moderation.data)
-	local print_name = user_print_name(msg.from):gsub("‮", "")
+	local print_name = user_print_name(msg.from):gsub("?", "")
 	local name_log = print_name:gsub("_", " ")
     if get_cmd == "id" and not result.action then
 		local channel = 'channel#id'..result.to.peer_id
@@ -675,13 +703,13 @@ function get_message_callback(extra, success, result)
 		local member_id = result.from.peer_id
 		local channel_id = result.to.peer_id
     if member_id == msg.from.id then
-      return send_large_msg("channel#id"..channel_id, "Leave using kickme command")
+      return send_large_msg("channel#id"..channel_id, " kickme ترک با استفاده از دستور")
     end
     if is_momod2(member_id, channel_id) and not is_admin2(msg.from.id) then
-			   return send_large_msg("channel#id"..channel_id, "You can't kick mods/owner/admins")
+			   return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران/صاحب/ناظران گروه را اخراج کنيد")
     end
     if is_admin2(member_id) then
-         return send_large_msg("channel#id"..channel_id, "You can't kick other admins")
+         return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران ديگر را اخراج کنيد")
     end
 		--savelog(msg.to.id, name_log.." ["..msg.from.id.."] kicked: ["..user_id.."] by reply")
 		kick_user(member_id, channel_id)
@@ -689,13 +717,13 @@ function get_message_callback(extra, success, result)
 		local user_id = result.action.user.peer_id
 		local channel_id = result.to.peer_id
     if member_id == msg.from.id then
-      return send_large_msg("channel#id"..channel_id, "Leave using kickme command")
+      return send_large_msg("channel#id"..channel_id, "kickme ترک با استفاده از دستور")
     end
     if is_momod2(member_id, channel_id) and not is_admin2(msg.from.id) then
-			   return send_large_msg("channel#id"..channel_id, "You can't kick mods/owner/admins")
+			   return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران/صاحب/ناظران گروه را اخراج کنيد")
     end
     if is_admin2(member_id) then
-         return send_large_msg("channel#id"..channel_id, "You can't kick other admins")
+         return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران ديگر را اخراج کنيد")
     end
 		savelog(msg.to.id, name_log.." ["..msg.from.id.."] kicked: ["..user_id.."] by reply to sev. msg.")
 		kick_user(user_id, channel_id)
@@ -717,7 +745,7 @@ function get_message_callback(extra, success, result)
 		local user_id = result.from.peer_id
 		local channel_id = "channel#id"..result.to.peer_id
 		if is_admin2(result.from.peer_id) then
-			return send_large_msg(channel_id, "You can't demote global admins!")
+			return send_large_msg(channel_id, "شما مجاز به تنزل مقام مديران سراسري نيستيد")
 		end
 		channel_demote(channel_id, "user#id"..user_id, ok_cb, false)
 		if result.from.username then
@@ -750,7 +778,7 @@ function get_message_callback(extra, success, result)
 	elseif get_cmd == "promote" then
 		local receiver = result.to.peer_id
 		local full_name = (result.from.first_name or '')..' '..(result.from.last_name or '')
-		local member_name = full_name:gsub("‮", "")
+		local member_name = full_name:gsub("?", "")
 		local member_username = member_name:gsub("_", " ")
 		if result.from.username then
 			member_username = '@'.. result.from.username
@@ -763,7 +791,7 @@ function get_message_callback(extra, success, result)
 		end
 	elseif get_cmd == "demote" then
 		local full_name = (result.from.first_name or '')..' '..(result.from.last_name or '')
-		local member_name = full_name:gsub("‮", "")
+		local member_name = full_name:gsub("?", "")
 		local member_username = member_name:gsub("_", " ")
     if result.from.username then
 		member_username = '@'.. result.from.username
@@ -821,7 +849,7 @@ local function cb_user_info(extra, success, result)
 			send_large_msg(receiver, text)]]
 	if get_cmd == "demoteadmin" then
 		if is_admin2(result.peer_id) then
-			return send_large_msg(receiver, "You can't demote global admins!")
+			return send_large_msg(receiver, "شما مجاز به تنزل مقام مديران سراسري نيستيد")
 		end
 		local user_id = "user#id"..result.peer_id
 		channel_demote(receiver, user_id, ok_cb, false)
@@ -874,13 +902,13 @@ local function callbackres(extra, success, result)
 		local channel_id = extra.channelid
     local sender = extra.sender
     if member_id == sender then
-      return send_large_msg("channel#id"..channel_id, "Leave using kickme command")
+      return send_large_msg("channel#id"..channel_id, "kickme ترک با استفاده از دستور")
     end
 		if is_momod2(member_id, channel_id) and not is_admin2(sender) then
-			   return send_large_msg("channel#id"..channel_id, "You can't kick mods/owner/admins")
+			   return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران/صاحب/ناظران گروه را اخراج کنيد")
     end
     if is_admin2(member_id) then
-         return send_large_msg("channel#id"..channel_id, "You can't kick other admins")
+         return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران ديگر را اخراج کنيد")
     end
 		kick_user(user_id, channel_id)
 	elseif get_cmd == "setadmin" then
@@ -931,7 +959,7 @@ local function callbackres(extra, success, result)
 		local user_id = "user#id"..result.peer_id
 		local channel_id = extra.channel
 		if is_admin2(result.peer_id) then
-			return send_large_msg(channel_id, "You can't demote global admins!")
+			return send_large_msg(channel_id, "شما مجاز به تنزل مقام مديران سراسري نيستيد")
 		end
 		channel_demote(channel_id, user_id, ok_cb, false)
 		if result.username then
@@ -965,7 +993,7 @@ local function in_channel_cb(cb_extra, success, result)
   local receiver = cb_extra.receiver
   local msg = cb_extra.msg
   local data = load_data(_config.moderation.data)
-  local print_name = user_print_name(cb_extra.msg.from):gsub("‮", "")
+  local print_name = user_print_name(cb_extra.msg.from):gsub("?", "")
   local name_log = print_name:gsub("_", " ")
   local member = cb_extra.username
   local memberid = cb_extra.user_id
@@ -983,13 +1011,13 @@ if get_cmd == "channel_block" then
      local channel_id = cb_extra.msg.to.id
      local sender = cb_extra.msg.from.id
       if user_id == sender then
-        return send_large_msg("channel#id"..channel_id, "Leave using kickme command")
+        return send_large_msg("channel#id"..channel_id, "kickme ترک با استفاده از دستور")
       end
       if is_momod2(user_id, channel_id) and not is_admin2(sender) then
-        return send_large_msg("channel#id"..channel_id, "You can't kick mods/owner/admins")
+        return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران/صاحب/ناظران گروه را اخراج کنيد")
       end
       if is_admin2(user_id) then
-        return send_large_msg("channel#id"..channel_id, "You can't kick other admins")
+        return send_large_msg("channel#id"..channel_id, "شما نميتوانيد مديران ديگر را اخراج کنيد")
       end
       if v.username then
         text = ""
@@ -1112,13 +1140,13 @@ local function run(msg, matches)
 			if not is_admin1(msg) then
 				return
 			end
-			return "Already a SuperGroup"
+			return "از قبل سوپرگروه ميباشد"
 		end
 	end
 	if msg.to.type == 'channel' then
 	local support_id = msg.from.id
 	local receiver = get_receiver(msg)
-	local print_name = user_print_name(msg.from):gsub("‮", "")
+	local print_name = user_print_name(msg.from):gsub("?", "")
 	local name_log = print_name:gsub("_", " ")
 	local data = load_data(_config.moderation.data)
 		if matches[1] == 'add' and not matches[2] then
@@ -1126,7 +1154,7 @@ local function run(msg, matches)
 				return
 			end
 			if is_super_group(msg) then
-				return reply_msg(msg.id, 'SuperGroup is already added.', ok_cb, false)
+				return reply_msg(msg.id, 'سوپرگروه قبلا اضافه شده.', ok_cb, false)
 			end
 			print("SuperGroup "..msg.to.print_name.."("..msg.to.id..") added")
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] added SuperGroup")
@@ -1137,7 +1165,7 @@ local function run(msg, matches)
 
 		if matches[1] == 'rem' and is_admin1(msg) and not matches[2] then
 			if not is_super_group(msg) then
-				return reply_msg(msg.id, 'SuperGroup is not added.', ok_cb, false)
+				return reply_msg(msg.id, 'سوپر گروه اضافه نشده است', ok_cb, false)
 			end
 			print("SuperGroup "..msg.to.print_name.."("..msg.to.id..") removed")
 			superrem(msg)
@@ -1167,10 +1195,10 @@ local function run(msg, matches)
 		if matches[1] == "owner" then
 			local group_owner = data[tostring(msg.to.id)]['set_owner']
 			if not group_owner then
-				return "no owner,ask admins in support groups to set owner for your SuperGroup"
+				return "صاحبي نيست...مديران در گروه پشتيباني براي تنظيم صاحب سوپر گروه مشورت کنيد"
 			end
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] used /owner")
-			return "SuperGroup owner is ["..group_owner..']'
+			return "صاحب سوپرگروه ميباشد ["..group_owner..']'
 		end
 
 		if matches[1] == "modlist" then
@@ -1299,14 +1327,14 @@ local function run(msg, matches)
 		if matches[1] == 'setlink' and is_owner(msg) then
 			data[tostring(msg.to.id)]['settings']['set_link'] = 'waiting'
 			save_data(_config.moderation.data, data)
-			return 'Please send the new group link now'
+			return 'لطفا لينک جديد گروه را وارد کنيد'
 		end
 
 		if msg.text then
 			if msg.text:match("^(https://telegram.me/joinchat/%S+)$") and data[tostring(msg.to.id)]['settings']['set_link'] == 'waiting' and is_owner(msg) then
 				data[tostring(msg.to.id)]['settings']['set_link'] = msg.text
 				save_data(_config.moderation.data, data)
-				return "New link set"
+				return "لينک جديد تنظيم شد"
 			end
 		end
 
@@ -1352,7 +1380,7 @@ local function run(msg, matches)
 
 			if matches[1] == 'setadmin' then
 				if not is_support(msg.from.id) and not is_owner(msg) then
-					return
+					return 'شما مجاز به ارسال دستور نميباشيد'
 				end
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
@@ -1388,7 +1416,7 @@ local function run(msg, matches)
 
 		if matches[1] == 'demoteadmin' then
 			if not is_support(msg.from.id) and not is_owner(msg) then
-				return
+				return 'شما مجاز به ارسال دستور نميباشيد'
 			end
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
@@ -1451,10 +1479,10 @@ local function run(msg, matches)
 
 		if matches[1] == 'promote' then
 		  if not is_momod(msg) then
-				return
+				return 'شما مجاز به ارسال دستور نميباشيد'
 			end
 			if not is_owner(msg) then
-				return "Only owner/admin can promote"
+				return "فقط صاحب گروه ميتواند"
 			end
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
@@ -1495,10 +1523,10 @@ local function run(msg, matches)
 
 		if matches[1] == 'demote' then
 			if not is_momod(msg) then
-				return
+				return "شما مجاز به ارسال دستور نميباشيد"
 			end
 			if not is_owner(msg) then
-				return "Only owner/support/admin can promote"
+				return "فقط صاحب گروه"
 			end
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
@@ -1546,7 +1574,7 @@ local function run(msg, matches)
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup description to: "..about_text)
 			channel_set_about(receiver, about_text, ok_cb, false)
-			return "Description has been set.\n\nSelect the chat again to see the changes."
+			return "توضيحات تعيين شده است"
 		end
 
 		if matches[1] == "setusername" and is_admin1(msg) then
@@ -1580,7 +1608,7 @@ local function run(msg, matches)
 			data[tostring(msg.to.id)]['settings']['set_photo'] = 'waiting'
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] started setting new SuperGroup photo")
-			return 'Please send the new group photo now'
+			return 'لطفا حالا عکس جديد گروه را ارسال کنيد'
 		end
 
 		if matches[1] == 'clean' then
@@ -1588,47 +1616,47 @@ local function run(msg, matches)
 				return
 			end
 			if not is_momod(msg) then
-				return "Only owner can clean"
+				return "فقط صاحب گروه مجاز به پاک کردن است"
 			end
 			if matches[2] == 'modlist' then
 				if next(data[tostring(msg.to.id)]['moderators']) == nil then
-					return 'No moderator(s) in this SuperGroup.'
+					return 'مديري در اين گروه وجود ندارد'
 				end
 				for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
 					data[tostring(msg.to.id)]['moderators'][tostring(k)] = nil
 					save_data(_config.moderation.data, data)
 				end
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] cleaned modlist")
-				return 'Modlist has been cleaned'
+				return 'ليست مديران پاکسازي شد'
 			end
 			if matches[2] == 'rules' then
 				local data_cat = 'rules'
 				if data[tostring(msg.to.id)][data_cat] == nil then
-					return "Rules have not been set"
+					return "قانوني تنظيم نشد"
 				end
 				data[tostring(msg.to.id)][data_cat] = nil
 				save_data(_config.moderation.data, data)
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] cleaned rules")
-				return 'Rules have been cleaned'
+				return 'قوانين پاکسازي شده اند'
 			end
 			if matches[2] == 'about' then
 				local receiver = get_receiver(msg)
 				local about_text = ' '
 				local data_cat = 'description'
 				if data[tostring(msg.to.id)][data_cat] == nil then
-					return 'About is not set'
+					return 'درباره تنظيم نشده است'
 				end
 				data[tostring(msg.to.id)][data_cat] = nil
 				save_data(_config.moderation.data, data)
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] cleaned about")
 				channel_set_about(receiver, about_text, ok_cb, false)
-				return "About has been cleaned"
+				return "درباره پاکسازي شد"
 			end
 			if matches[2] == 'mutelist' then
 				chat_id = msg.to.id
 				local hash =  'mute_user:'..chat_id
 					redis:del(hash)
-				return "Mutelist Cleaned"
+				return "ليست سايلنت پاکسازي شد"
 			end
 			if matches[2] == 'username' and is_admin1(msg) then
 				local function ok_username_cb (extra, success, result)
@@ -1653,6 +1681,10 @@ local function run(msg, matches)
 			if matches[2] == 'links' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked link posting ")
 				return lock_group_links(msg, data, target)
+			end
+			if matches[2] == 'emoji' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked emoji posting ")
+				return lock_group_emoji(msg, data, target)
 			end
 			if matches[2] == 'spam' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked spam ")
@@ -1698,6 +1730,10 @@ local function run(msg, matches)
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link posting")
 				return unlock_group_links(msg, data, target)
 			end
+			if matches[2] == 'emoji' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked emoji posting")
+				return unlock_group_emoji(msg, data, target)
+			end
 			if matches[2] == 'spam' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked spam")
 				return unlock_group_spam(msg, data, target)
@@ -1738,16 +1774,16 @@ local function run(msg, matches)
 
 		if matches[1] == 'setflood' then
 			if not is_momod(msg) then
-				return
+				return 'شما مجاز به ارسال دستور نميباشيد'
 			end
 			if tonumber(matches[2]) < 5 or tonumber(matches[2]) > 20 then
-				return "Wrong number,range is [5-20]"
+				return "عدد وارد شده صحيح نيست. محدوده بين 5تا20 ميباشد"
 			end
 			local flood_max = matches[2]
 			data[tostring(msg.to.id)]['settings']['flood_msg_max'] = flood_max
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set flood to ["..matches[2].."]")
-			return 'Flood has been set to: '..matches[2]
+			return 'سيل پيام تغيير کرد: '..matches[2]
 		end
 		if matches[1] == 'public' and is_momod(msg) then
 			local target = msg.to.id
@@ -1768,7 +1804,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return msg_type.." has been muted"
+					return msg_type.."بيصدا شد"
 				else
 					return "SuperGroup mute "..msg_type.." is already on"
 				end
@@ -1922,11 +1958,11 @@ local function run(msg, matches)
 				if is_muted_user(chat_id, user_id) then
 					unmute_user(chat_id, user_id)
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] removed ["..user_id.."] from the muted users list")
-					return "["..user_id.."] removed from the muted users list"
+					return "از ليست کاربران بيصدا حذف شد ["..user_id.."]"
 				elseif is_owner(msg) then
 					mute_user(chat_id, user_id)
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] added ["..user_id.."] to the muted users list")
-					return "["..user_id.."] added to the muted user list"
+					return "به ليست کاربران بيصدا اضافه شد ["..user_id.."]"
 				end
 			elseif matches[1] == "muteuser" and matches[2] and not string.match(matches[2], '^%d+$') then
 				local receiver = get_receiver(msg)
@@ -2096,5 +2132,4 @@ return {
   run = run,
   pre_process = pre_process
 }
---End supergrpup.lua
---By @Rondoozle
+
